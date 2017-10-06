@@ -1,0 +1,10 @@
+*.pyc
+.idea
+
+/venv
+pip3
+python3
+__pycache__
+
+*.session
+settings.py
