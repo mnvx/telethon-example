@@ -21,21 +21,32 @@ if not client.is_user_authorized():
 
 # (3) Using built-in methods
 dialogs, entities = client.get_dialogs(10)
-print(entities)
-entity = entities[0]
 
-# (4) !! Invoking a request manually !!
-result = client(GetHistoryRequest(
-    entity,
-    limit=20,
-    offset_date=None,
-    offset_id=0,
-    max_id=0,
-    min_id=0,
-    add_offset=0
-))
+for i, dialog in enumerate(dialogs):
+    if dialog.unread_count > 0:
+        print(dialog)
+        print('\n')
 
-# Now you have access to the first 20 messages
-messages = result.messages
+        entity = entities[i]
 
-print(messages)
+        print(entity)
+        print('\n')
+
+        # (4) !! Invoking a request manually !!
+        result = client(GetHistoryRequest(
+            entity,
+            limit=100,
+            offset_date=None,
+            offset_id=0,
+            max_id=0,
+            min_id=dialog.read_inbox_max_id,
+            add_offset=0
+        ))
+
+        # Now you have access to the first 20 messages
+        messages = result.messages
+
+        for message in messages:
+            print(message)
+            print('\n')
+
